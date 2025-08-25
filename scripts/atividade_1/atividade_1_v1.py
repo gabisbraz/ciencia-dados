@@ -19,9 +19,12 @@
 import pandas as pd
 import plotly.express as px
 import plotly.figure_factory as ff
+import plotly.io as pio
 
 
-df = pd.read_csv("data/atividade_1/tb_1.csv")
+pio.renderers.default = "browser"
+
+df = pd.read_csv("../../data/atividade_1/tb_1.csv")
 
 
 # a) Qual é a estrutura do dataset? (Quantas linhas e colunas existem?)
@@ -115,3 +118,23 @@ fig = ff.create_annotated_heatmap(
 )
 fig.update_layout(title="Correlação entre variáveis numéricas")
 fig.show()
+
+
+# 6) Outliers e Anomalias
+
+# a) Existem outliers nos dados? (Boxplots podem ajudar a identificar). 
+# Boxplot geral para identificar outliers
+fig = px.box(df[["math_score", "reading_score", "writing_score"]], title="Boxplot Geral das Notas")
+fig.show()
+
+# 7) Comparações e Segmentações
+
+# Média das notas por gênero
+media_por_genero = df.groupby("gender")[["math_score","reading_score","writing_score"]].mean()
+print("=== Média das notas por gênero ===")
+print(media_por_genero, "\n")
+
+# Média das notas por tipo de almoço
+media_por_almoço = df.groupby("lunch")[["math_score","reading_score","writing_score"]].mean()
+print("=== Média das notas por tipo de almoço ===")
+print(media_por_almoço, "\n")
