@@ -9,6 +9,7 @@
 # mesmos dados utilizados anteriormente, respondendo às seguintes questões:
 
 import pandas as pd
+import numpy as np
 
 df = pd.read_csv("data/tb_1.csv")
 
@@ -24,6 +25,21 @@ print("Número de linhas após remover duplicatas:", len(df))
 
 # c) Há outliers nos dados?
 
+numeric_cols = ["math_score", "reading_score", "writing_score"]
+
+for col in numeric_cols:
+    Q1 = df[col].quantile(0.25)  
+    Q3 = df[col].quantile(0.75)  
+    IQR = Q3 - Q1                
+
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    outliers = df[(df[col] < lower_bound) | (df[col] > upper_bound)]
+
+    print(f"\nColuna: {col}")
+    print(f"Limite inferior: {lower_bound}, Limite superior: {upper_bound}")
+    print(f"Número de outliers: {outliers.shape[0]}")
 
 # Transformação e Engenharia de Atributos
 # a) Há dados que precisam ser transformados de categóricos para numéricos?
